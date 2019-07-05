@@ -1,0 +1,12 @@
+$font-header: 1.8em;
+$font-sub-header: 1.3em;
+
+$spacing: 8px;
+
+@function spacing($unit) {
+  @return #{$spacing * $unit};
+}
+
+$color-primary: #44b6ba;
+$color-dark: #112d2e;
+$color-text: #2c4544;

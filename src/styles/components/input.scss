@@ -1,0 +1,8 @@
+@import "../styles/util";
+
+.input {
+  border: 1px solid $color-primary;
+  border-radius: 5px;
+
+  padding: spacing(1) spacing(2);
+}

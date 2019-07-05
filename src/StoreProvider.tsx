@@ -1,15 +1,17 @@
-import React from 'react';
-import { useLocalStore } from 'mobx-react';
-import MathStore from './stores/MathStore';
-import storeContext from './context';
+import React from "react";
+import { useLocalStore } from "mobx-react";
+import NumFactStore from "./stores/NumFact";
+import storeContext from "./context";
+import { getMathFact } from "./api";
+import { NumFact } from "./models/numfact";
 
 const StoreProvider: React.SFC = ({ children }) => {
-  const store = useLocalStore(() => ({ mathStore: new MathStore() }));
+  const store = useLocalStore(() => ({
+    math: new NumFactStore<string, NumFact>("math", getMathFact, "")
+  }));
   return (
-    <storeContext.Provider value={store}>
-      {children}
-    </storeContext.Provider>
-  )
-}
+    <storeContext.Provider value={store}>{children}</storeContext.Provider>
+  );
+};
 
 export default StoreProvider;
