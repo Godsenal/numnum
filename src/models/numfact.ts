@@ -1,4 +1,4 @@
-export type NumFactType = 'date' | 'math' | 'trivia' | 'year';
+export type NumFactType = "date" | "math" | "trivia" | "year";
 
 export interface NumFact {
   type: NumFactType;
@@ -6,3 +6,6 @@ export interface NumFact {
   text: string;
   number: number;
 }
+
+export type DateNumFact = NumFact & { year: number };
+export type YearNumFact = NumFact & { date: string };
