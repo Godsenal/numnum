@@ -34,7 +34,7 @@ const Result: React.SFC = observer(() => {
   if (!text) return null;
 
   return (
-    <div className="content" style={{ textAlign: 'center' }}>
+    <div className="content box" style={{ textAlign: 'center' }}>
       <h5 className="subtitle is-5">
         {`${type.toUpperCase()} fact of `}
         <span className="has-text-info">{query}</span>
