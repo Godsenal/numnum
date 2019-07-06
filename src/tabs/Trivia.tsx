@@ -1,11 +1,11 @@
 import React from "react";
 import { observer } from "mobx-react";
-import { Search, FactTitle } from "../components";
+import { Search } from "../components";
 import { useStore } from "../hooks";
 
 const Trivia: React.SFC = observer(() => {
   const store = useStore();
-  const { text, status, found } = store.trivia;
+  const { status } = store.trivia;
 
   const isLoading = status === "FETCHING";
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,15 +16,14 @@ const Trivia: React.SFC = observer(() => {
   };
   return (
     <div>
-      <FactTitle>Trivia</FactTitle>
       <Search
         placeholder="Search number..."
         isLoading={isLoading}
         onSearch={onSearch}
         onChange={onChange}
+        label="Trivia"
         value={store.trivia.query}
       />
-      <div className="content">{found && <blockquote>{text}</blockquote>}</div>
     </div>
   );
 });

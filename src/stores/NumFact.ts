@@ -1,16 +1,17 @@
 import { action, runInAction, observable, decorate } from "mobx";
+import rootStore, { RootStore } from './Root';
 import { NumFact, NumFactType } from "../models/numfact";
 
-export default class NumFactStore<Q, R extends NumFact> implements NumFact {
+export default class NumFactStore<Q, R extends NumFact> {
+
+  rootStore: RootStore = rootStore;
   api: ApiCall<Q[], R>;
   status: Status = "INIT";
   error: string = "";
 
   type: NumFactType;
   query: Q;
-  found = false;
-  text = "";
-  number = 0;
+  response!: R;
 
   constructor(type: NumFactType, api: ApiCall<Q[], R>, baseQuery: Q) {
     this.type = type;
@@ -20,12 +21,15 @@ export default class NumFactStore<Q, R extends NumFact> implements NumFact {
   fetchFact = async () => {
     this.status = "FETCHING";
     try {
-      const { found, text, number } = await this.api(this.query);
+      const response = await this.api(this.query);
       runInAction(() => {
         this.status = "SUCCESS";
-        this.found = found;
-        this.text = text;
-        this.number = number;
+        this.response = response;
+        const { type, text } = response;
+        const queryText = typeof this.query === 'string' ? this.query : Object.entries(this.query).reduce((acc, [key, value]) => {
+          return `${acc} ${key}: ${value} `;
+        }, '');
+        this.rootStore.setResult(type, queryText, text);
       });
     } catch (err) {
       runInAction(() => {
@@ -41,9 +45,7 @@ export default class NumFactStore<Q, R extends NumFact> implements NumFact {
 }
 
 decorate(NumFactStore, {
-  found: observable,
-  text: observable,
-  number: observable,
+  response: observable,
 
   query: observable,
   status: observable,
